@@ -25,10 +25,11 @@ class BaseScraper(ABC):
         else:
             print(f"DEBUG: No proxy configured (proxies_list has {len(settings.proxies_list)} items)")
         
+
         self.client = httpx.AsyncClient(
             timeout=10.0,
             headers=get_headers(ua),
-            proxies=proxy  
+            proxy=proxy
         )
         self.session_headers = self.client.headers.copy()
         return self
@@ -64,7 +65,7 @@ class BaseScraper(ABC):
                             self.client = httpx.AsyncClient(
                                 timeout=10.0,
                                 headers=get_headers(ua),
-                                proxies=proxy
+                                proxy=proxy
                             )
                     continue
                 resp.raise_for_status()
