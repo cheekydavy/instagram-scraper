@@ -21,8 +21,7 @@ class BaseScraper(ABC):
         proxy = get_proxy(settings.proxies_list)
         
         if proxy:
-            proxy_url = proxy.get("http://") or proxy.get("https://") or str(proxy)
-            print(f"DEBUG: Using proxy: {proxy_url}")
+            print(f"DEBUG: Using proxy: {proxy}")
         else:
             print(f"DEBUG: No proxy configured (proxies_list has {len(settings.proxies_list)} items)")
         
@@ -60,10 +59,8 @@ class BaseScraper(ABC):
                         # Rotate proxy on retry
                         proxy = get_proxy(settings.proxies_list)
                         if proxy:
-                            
                             await self.client.aclose()
-                            proxy_url = proxy.get("http://") or proxy.get("https://") or str(proxy)
-                            print(f"DEBUG: Rotating to new proxy: {proxy_url}")
+                            print(f"DEBUG: Rotating to new proxy: {proxy}")
                             self.client = httpx.AsyncClient(
                                 timeout=10.0,
                                 headers=get_headers(ua),
