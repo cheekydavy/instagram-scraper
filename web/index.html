@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mbuvi Tech IG Downloader</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Mbuvi Tech</h1>
+            <p>Simple IG Post Downloader</p>
+        </header>
+        <main>
+            <form id="downloadForm">
+                <label for="igUrl">Paste Instagram Post/Reel URL:</label>
+                <div class="input-wrapper">
+                    <input type="url" id="igUrl" placeholder="https://www.instagram.com/reel/DQ6KvymjeLO/" required>
+                    <button type="button" id="pasteBtn" class="paste-btn" title="Paste from clipboard">📋</button>
+                </div>
+                <button type="submit" id="submitBtn">Download Media</button>
+            </form>
+            <div id="status" class="status"></div>
+            <div id="preview"></div>
+            <div id="downloadLinks" class="download-links"></div>
+        </main>
+        <footer>
+            <p>Developed by <strong>Cheeky Davy</strong></p>
+            <div class="links">
+                <a href="https://github.com/cheekydavy" target="_blank">GitHub</a> |
+                <a href="https://t.me/mbuvi" target="_blank">Telegram</a> |
+                <a href="https://wa.me/+2547464440595" target="_blank">WhatsApp</a> |
+                <a href="https://instagram.com/_mbuvi" target="_blank">Instagram</a>
+            </div>
+        </footer>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
