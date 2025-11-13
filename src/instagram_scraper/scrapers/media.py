@@ -19,22 +19,19 @@ class MediaScraper(BaseScraper):
         Try GraphQL first (with proxies if available) for private accounts.
         Fall back to yt-dlp if GraphQL fails (e.g., on cloud IPs).
         """
-        # Try GraphQL first - uses proxies automatically via BaseScraper
         try:
             return await self._scrape_with_graphql(shortcode)
         except (httpx.HTTPStatusError, ValueError, Exception) as graphql_error:
             error_msg = str(graphql_error)
-            # Check if it's a redirect to login (cloud IP block)
             if "302" in error_msg or "Redirect" in error_msg or "login" in error_msg.lower():
                 print(f"DEBUG: GraphQL blocked (likely cloud IP): {error_msg}, falling back to yt-dlp")
             else:
                 print(f"DEBUG: GraphQL failed: {error_msg}, falling back to yt-dlp")
-            
-            # Fallback to yt-dlp for public content (works on cloud IPs)
+
             try:
                 return await self._scrape_with_ytdlp(shortcode)
             except Exception as ytdlp_error:
-                # If both fail, raise a combined error
+               
                 raise ValueError(
                     f"Both methods failed. GraphQL: {error_msg}, yt-dlp: {str(ytdlp_error)}"
                 )
@@ -112,7 +109,7 @@ class MediaScraper(BaseScraper):
             'extract_flat': False,
         }
         
-        # Run yt-dlp in executor to avoid blocking the event loop
+        
         loop = asyncio.get_event_loop()
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = await loop.run_in_executor(None, ydl.extract_info, post_url, False)
@@ -121,13 +118,13 @@ class MediaScraper(BaseScraper):
             thumbnail_url = ""
             is_video = False
             
-            # Handle single media
+          
             if 'url' in info:
                 media_urls.append(info['url'])
                 is_video = info.get('vcodec') != 'none'
                 thumbnail_url = info.get('thumbnail', '')
             
-            # Handle entries (carousel posts)
+            
             elif 'entries' in info and info['entries']:
                 for entry in info['entries']:
                     if 'url' in entry:
@@ -137,7 +134,7 @@ class MediaScraper(BaseScraper):
                         if not thumbnail_url:
                             thumbnail_url = entry.get('thumbnail', '')
             
-            # Fallback: try to get from formats
+
             elif 'formats' in info:
                 best_format = None
                 for fmt in info['formats']:
